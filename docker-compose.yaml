@@ -1,0 +1,7 @@
+version: '3'
+
+services:
+  bambot:
+    build: .
+    container_name: bambot
+    restart: always
