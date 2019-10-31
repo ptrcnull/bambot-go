@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bytes"
 	"github.com/bwmarrin/discordgo"
+	"io/ioutil"
 	"log"
 	"os"
 	"os/signal"
@@ -9,7 +11,7 @@ import (
 	"syscall"
 )
 
-var file *os.File
+var file []byte
 
 func main() {
 	client, err := discordgo.New("Bot " + os.Getenv("TOKEN"))
@@ -17,7 +19,7 @@ func main() {
 		log.Panic(err)
 	}
 
-	f, err := os.Open("bam.png")
+	f, err := ioutil.ReadFile("bam.png")
 	if err != nil {
 		log.Panic(err)
 	}
@@ -54,7 +56,7 @@ func onMessage(s *discordgo.Session, m *discordgo.MessageCreate) {
 				&discordgo.File{
 					Name:        "bam.png",
 					ContentType: "image/png",
-					Reader:      file,
+					Reader:      bytes.NewReader(file),
 				},
 			},
 		})
