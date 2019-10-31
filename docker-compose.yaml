@@ -5,3 +5,4 @@ services:
     build: .
     container_name: bambot
     restart: always
+    env_file: .env
