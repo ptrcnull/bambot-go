@@ -2,18 +2,26 @@ package main
 
 import (
 	"bytes"
-	"github.com/bwmarrin/discordgo"
+	"errors"
 	"io/ioutil"
 	"log"
 	"os"
 	"os/signal"
 	"strings"
 	"syscall"
+
+	"github.com/bwmarrin/discordgo"
 )
 
 var file []byte
 
 func main() {
+	token := os.Getenv("TOKEN")
+
+	if token == "" {
+		log.Panic(errors.New("Failed to load TOKEN from environment"))
+	}
+
 	client, err := discordgo.New("Bot " + os.Getenv("TOKEN"))
 	if err != nil {
 		log.Panic(err)
@@ -53,7 +61,7 @@ func onMessage(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if strings.HasPrefix(m.Content, "!bam") {
 		_, err := s.ChannelMessageSendComplex(m.ChannelID, &discordgo.MessageSend{
 			Files: []*discordgo.File{
-				&discordgo.File{
+				{
 					Name:        "bam.png",
 					ContentType: "image/png",
 					Reader:      bytes.NewReader(file),
