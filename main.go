@@ -2,13 +2,14 @@ package main
 
 import (
 	"bytes"
-	"github.com/bwmarrin/discordgo"
 	"io/ioutil"
 	"log"
 	"os"
 	"os/signal"
 	"strings"
 	"syscall"
+
+	"github.com/bwmarrin/discordgo"
 )
 
 var file []byte
@@ -53,7 +54,7 @@ func onMessage(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if strings.HasPrefix(m.Content, "!bam") {
 		_, err := s.ChannelMessageSendComplex(m.ChannelID, &discordgo.MessageSend{
 			Files: []*discordgo.File{
-				&discordgo.File{
+				{
 					Name:        "bam.png",
 					ContentType: "image/png",
 					Reader:      bytes.NewReader(file),
