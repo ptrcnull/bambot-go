@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"errors"
 	"io/ioutil"
 	"log"
 	"os"
@@ -15,6 +16,12 @@ import (
 var file []byte
 
 func main() {
+	token := os.Getenv("TOKEN")
+
+	if token == "" {
+		log.Panic(errors.New("Failed to load TOKEN from environment"))
+	}
+
 	client, err := discordgo.New("Bot " + os.Getenv("TOKEN"))
 	if err != nil {
 		log.Panic(err)
